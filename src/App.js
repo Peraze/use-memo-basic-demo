@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
 function App() {
+  const [count, setCount] = useState(0);
+  const [square, setSquare] = useState(2);
+
+  const expensiveFunction = number => {
+    let i = 0;
+    while( i < 2000000000) i++;
+    return square * number;
+  };
+
+  const fastFunction = number => {
+    return number;
+  }
+
+  const slowResult = useMemo(() => expensiveFunction(square), [square]);
+  const fastResult = fastFunction(count);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <h2>Expensive function</h2>
+      <p>{square} x {square} = {slowResult(square)}</p>
+      <button onClick={() => setCount(count + 1)} >Square again</button>
+      <h2>Fast function</h2>
+      <p>Count is: {fastFunction(count)}</p>
     </div>
   );
 }
